@@ -1,0 +1,57 @@
+@layout('layouts/master')
+
+@section('content')
+
+   <div class="row ">
+     <div class="col-md-12">
+
+      <div class="card bg-secondary mt-3">
+        <div class="card-header"><h1 class="text-center">{{ post.title }}</h1></div>
+        <div class="card-body">
+
+          @if(post)
+
+             <p class="well my-4">{{ post.content }}</p>
+             <div class="my-3">
+               Created at {{ post.created_at }}
+             </div>
+             <h5><span class="badge badge-primary">{{ post.tag.name }}</span></h5>
+             <h5><span class="badge badge-success">Author : {{ post.user.username }}</span></h5>
+
+            @each(reply in post.replies)
+            <div class="row">
+              <div class="col-md-11 offset-md-1">
+                <hr>
+                <p class="well my-4">{{ reply.content }}</p>
+                <div class="my-3">
+                  Created at {{ reply.created_at }}
+                </div>
+                <h5><span class="badge badge-success">Author : {{ reply.user.username }}</span></h5>
+                  </div>
+                </div>
+            @endeach
+
+            <form action="{{ route('posts.reply.store', {slug: post.slug}) }}" method="POST">
+              {{ csrfField() }}
+
+
+            <div class="form-group">
+             <label for="content">New reply</label>
+             <textarea name="content" id="content" rows="2" class="form-control {{ hasErrorFor('content') ? 'is-invalid' : '' }}"></textarea>
+             {{ elIf('<div class="invalid-feedback">$self</div>', getErrorFor('content'), hasErrorFor('content')) }}
+          </div>
+
+              <button class="btn btn-warning">Reply</button>
+
+            </form>
+
+          @else
+            <div> no post yet </div>
+          @endif
+
+        </div>
+      </div>
+     </div>
+   </div>
+
+@endsection

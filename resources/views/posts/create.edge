@@ -1,0 +1,44 @@
+@layout('layouts/master')
+
+@section('content')
+
+   <div class="row ">
+     <div class="col-md-12">
+
+      <div class="card bg-secondary mt-3">
+        <div class="card-header"><h1 class="text-center">New Post</h1></div>
+        <div class="card-body">
+
+                 <form action="{{ route('posts.store') }}" method="POST">
+                   {{ csrfField() }}
+                   <div class="form-group">
+                     <label for="email">Title</label>
+                     <input value="{{ old('title', '') }}" type="title" name="title" id="title" class="form-control {{ hasErrorFor('title') ? 'is-invalid' : '' }}" placeholder="Yout title">
+                     {{ elIf('<div class="invalid-feedback">$self</div>', getErrorFor('title'), hasErrorFor('title')) }}
+                  </div>
+
+                  <div class="form-group">
+                    <label for="tag">Tag</label>
+                    <select name="tag" id="tag"  class="form-control {{ hasErrorFor('tag') ? 'is-invalid' : '' }}">
+                      @each(tag in tags.toJSON())
+                        <option value="{{ tag.id }}">{{ tag.name }}</option>
+                      @endeach
+                    </select>
+                    {{ elIf('<div class="invalid-feedback">$self</div>', getErrorFor('tag'), hasErrorFor('tag')) }}
+                 </div>
+
+                 <div class="form-group">
+                  <label for="email">Content</label>
+                  <textarea name="content" id="content" rows="5" class="form-control {{ hasErrorFor('content') ? 'is-invalid' : '' }}"></textarea>
+                  {{ elIf('<div class="invalid-feedback">$self</div>', getErrorFor('content'), hasErrorFor('content')) }}
+               </div>
+
+                   <button class="btn btn-success btn-block">Add Post</button>
+
+                 </form>
+        </div>
+      </div>
+     </div>
+   </div>
+
+@endsection

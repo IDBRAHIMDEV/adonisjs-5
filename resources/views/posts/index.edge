@@ -1,0 +1,50 @@
+@layout('layouts/master')
+
+@section('content')
+
+  @include('partials/_subNav')
+
+   <div class="row ">
+     <div class="col-md-12">
+
+      <div class="card bg-secondary mt-3">
+        <div class="card-header"><h1 class="text-center">List of posts</h1></div>
+        <div class="card-body">
+
+          @set('posts', posts.toJSON())
+
+          @if(posts.data.length)
+
+            <div class="list-group">
+              @each(post in posts.data)
+                <div class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1"> <a href="{{ route('posts.show', { 'slug': post.slug }) }}">{{ post.title }}</a> </h5>
+                    <small class="text-muted text-center">
+                       {{ post.created_at }} <br>
+                       <span class="badge badge-dark mt-1 p-1">
+                         {{ post.replies.length }} {{ pluralize('Reply', post.replies.length) }}
+                       </span>
+                    </small>
+                  </div>
+                  <p class="mb-1">
+                    <strong>Author</strong> <a href="">{{ post.user.username }}</a> </p>
+                  <small class="text-muted">
+                    <span class="badge badge-primary">{{ post.tag.name }}</span>
+                  </small>
+                </div>
+              @endeach
+            </div>
+
+            @!component('common/_pagination', pagination = posts)
+
+          @else
+            <div> no posts yet </div>
+          @endif
+
+        </div>
+      </div>
+     </div>
+   </div>
+
+@endsection

@@ -1,0 +1,16 @@
+
+<div class="my-2">
+  <a href="{{ route('posts.create') }}" class="btn btn-primary btn-block">New post</a>
+</div>
+
+<div class="mt-3">
+  <h4 class="my-2">Tags</h4>
+  <div class="list-group">
+    @each(tag in tags.toJSON())
+      <a href="{{ route('posts.by.tag', {slug: tag.slug}) }}"
+         class="list-group-item list-group-item-action {{ request.match(['/tag/' + tag.slug]) ? 'active' : '' }}">
+         {{ tag.name }}
+      </a>
+    @endeach
+  </div>
+</div>
